@@ -1,0 +1,31 @@
+name: Verify Project
+
+on:
+  push:
+    branches:
+      - main
+      - '**'  # Run on all branches
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Homebrew
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          echo "/home/linuxbrew/.linuxbrew/bin" >> $GITHUB_PATH
+
+      - name: Install Sui using Homebrew
+        run: brew install sui
+      
+      - name: Build Move project
+        run: sui move build
+        working-directory: ./my_move_module
+
+      - name: Run Move tests
+        run: sui move test
+        working-directory: ./my_move_module
