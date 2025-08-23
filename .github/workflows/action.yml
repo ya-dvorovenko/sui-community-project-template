@@ -4,28 +4,39 @@ on:
   push:
     branches:
       - main
-      - '**'  # Run on all branches
+      - '**'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./my_move_module
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install Homebrew
+      - name: Install dependencies
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo "/home/linuxbrew/.linuxbrew/bin" >> $GITHUB_PATH
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev pkg-config libclang-dev
 
-      - name: Install Sui using Homebrew
-        run: brew install sui
-      
+      - name: Install Sui CLI (pinned)
+        run: |
+          set -euo pipefail
+          VER=1.31.0   # set to the Sui version your package targets
+          curl -L "https://github.com/MystenLabs/sui/releases/download/v${VER}/sui-${VER}-ubuntu-x86_64.tgz" -o sui.tgz
+          sudo tar -xzf sui.tgz -C /usr/local/bin sui
+          sui --version
+
       - name: Build Move project
         run: sui move build
-        working-directory: ./my_move_module
 
       - name: Run Move tests
-        run: sui move test
-        working-directory: ./my_move_module
+        env:
+          RUST_LOG: info
+        run: sui move test -v
