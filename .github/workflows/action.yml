@@ -25,10 +25,12 @@ jobs:
           sudo mv ./sui /usr/local/bin/sui
           sui --version
 
+      # Build the smart Contract
       - name: Build and Test Move project
         working-directory: move
         run: sui move build && sui move test --verbose
 
+      # Install node.js
       - name: NPM BUILD TX Environment
         uses: actions/setup-node@v4
         with:
@@ -37,6 +39,6 @@ jobs:
       # Build the User Interface app
       - name: Set up working directory
         run: |
-          cd ui && npm ci
+          cd ui && npm install
 
-          
+
