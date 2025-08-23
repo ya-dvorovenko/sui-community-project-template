@@ -15,14 +15,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Pull Sui tools image
-        run: docker pull mysten/sui-tools:mainnet-v1.54.2
+      - name: Set up sui environment
+        working-directory: .
+        run: |
+          docker pull mysten/sui-tools:mainnet
+          docker create --name tmp_cont mysten/sui-tools:mainnet
+          docker cp tmp_cont:/usr/local/bin/sui ./sui
+          chmod +x ./sui
+          sudo mv ./sui /usr/local/bin/sui
+          sui --version
 
       - name: Build and Test Move project
+        working-directory: move
+        run: sui move build && sui move test --verbose
+
+      - name: NPM BUILD TX Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Build the User Interface app
+      - name: Set up working directory
         run: |
-          docker run --rm \
-                -e RUST_LOG="$RUST_LOG" \
-                -v "${{ github.workspace }}:/workspace" \
-                -w /workspace/my_move_module \
-                mysten/sui-tools:mainnet-v1.54.2 \
-                bash -lc 'sui move build && sui move test --verbose'
+          cd ui && npm ci
+
+          
