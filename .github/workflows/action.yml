@@ -18,22 +18,11 @@ jobs:
       - name: Pull Sui tools image
         run: docker pull mysten/sui-tools:mainnet-v1.54.2
 
-      - name: Build Move project
+      - name: Build and Test Move project
         run: |
           docker run --rm \
                 -e RUST_LOG="$RUST_LOG" \
                 -v "${{ github.workspace }}:/workspace" \
                 -w /workspace/my_move_module \
                 mysten/sui-tools:mainnet-v1.54.2 \
-                sui move build
-
-      - name: Run Move tests
-        env:
-          RUST_LOG: info
-        run: |
-          docker run --rm \
-                -e RUST_LOG="$RUST_LOG" \
-                -v "${{ github.workspace }}:/workspace" \
-                -w /workspace/my_move_module \
-                mysten/sui-tools:mainnet-v1.54.2 \
-                sui move test
+                bash -lc 'sui move build && sui move test -v'
