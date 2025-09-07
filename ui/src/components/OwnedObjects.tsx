@@ -322,8 +322,8 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
                           color="orange"
                         >
                           {isCreatingBattle[heroId]
-                            ? "Creating Battle Place..."
-                            : "Create Battle Place"}
+                            ? "Creating Arena..."
+                            : "Create Arena"}
                         </Button>
                       </Flex>
                     </Tabs.Content>

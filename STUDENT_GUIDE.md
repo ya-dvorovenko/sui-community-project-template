@@ -212,7 +212,7 @@ export const transferHero = (heroId: string, to: string) => {
 }
 ```
 
-#### 5. **Create Battle Place** (`ui/src/utility/battle/create_arena.ts`)
+#### 5. **Create Arena** (`ui/src/utility/battle/create_arena.ts`)
 
 ```typescript
 export const createArena = (packageId: string, heroId: string) => {

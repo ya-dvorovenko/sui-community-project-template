@@ -273,7 +273,7 @@ module challenge_1::arena_tests {
 
         next_tx(&mut scenario, SENDER);
 
-        // Create battle place with the hero
+        // Create arena with the hero
         {
             let hero = ts::take_from_sender<Hero>(&scenario);
             arena::create_arena(hero, scenario.ctx());
