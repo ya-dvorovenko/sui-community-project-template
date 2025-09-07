@@ -94,7 +94,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
 #### 7. **delist** function (Admin Only)
 
 ```move
-public fun delist(list_hero: ListHero, _: &AdminCap) {
+public fun delist(_: &AdminCap, list_hero: ListHero) {
     // TODO: Implement admin delist functionality
     // Hints:
     // - Destructure list_hero (ignore price with _)
@@ -107,7 +107,7 @@ public fun delist(list_hero: ListHero, _: &AdminCap) {
 #### 8. **change_the_price** function (Admin Only)
 
 ```move
-public fun change_the_price(list_hero: &mut ListHero, new_price: u64, _: &AdminCap) {
+public fun change_the_price(_: &AdminCap, list_hero: &mut ListHero, new_price: u64) {
     // TODO: Update the listing price
     // Hints:
     // - Access the price field of list_hero and update it
@@ -263,7 +263,7 @@ export const delist = (
 
   // TODO: Add moveCall to delist a hero (Admin only)
   // Function: `${packageId}::battleplace::delist`
-  // Arguments: listHeroId (object), adminCapId (object)
+  // Arguments: adminCapId (object), listHeroId (object)
   // Hints:
   // - Use tx.object() for both objects
   // - This requires admin capability verification
@@ -289,7 +289,7 @@ export const changePrice = (
 
   // TODO: Add moveCall to change hero price (Admin only)
   // Function: `${packageId}::battleplace::change_the_price`
-  // Arguments: listHeroId (object), newPriceInMist (u64), adminCapId (object)
+  // Arguments: adminCapId (object), listHeroId (object), newPriceInMist (u64)
   // Hints:
   // - Use tx.object() for objects
   // - Use tx.pure.u64() for the new price

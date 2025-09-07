@@ -133,7 +133,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
 
 // ========= ADMIN FUNCTIONS =========
 
-public fun delist(list_hero: ListHero, _: &AdminCap) {
+public fun delist(_: &AdminCap, list_hero: ListHero) {
     // TODO: Implement admin delist functionality
     // Hints:
     // - Destructure list_hero (ignore price with _)
@@ -142,7 +142,7 @@ public fun delist(list_hero: ListHero, _: &AdminCap) {
     // - The AdminCap parameter ensures only admin can call this
 }
 
-public fun change_the_price(list_hero: &mut ListHero, new_price: u64, _: &AdminCap) {
+public fun change_the_price(_: &AdminCap, list_hero: &mut ListHero, new_price: u64) {
     // TODO: Update the listing price
     // Hints:
     // - Access the price field of list_hero and update it
