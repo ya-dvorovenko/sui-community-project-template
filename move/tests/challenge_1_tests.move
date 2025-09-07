@@ -1,8 +1,8 @@
 #[test_only]
-module challenge_1::arena_tests {
-    use challenge_1::arena::{Self, Arena, ArenaCreated, ArenaCompleted};
-    use challenge_1::hero::{Self, Hero, HeroMetadata};
-    use challenge_1::marketplace::{
+module challenge::arena_tests {
+    use challenge::arena::{Self, Arena, ArenaCreated, ArenaCompleted};
+    use challenge::hero::{Self, Hero, HeroMetadata};
+    use challenge::marketplace::{
         Self,
         ListHero,
         AdminCap,

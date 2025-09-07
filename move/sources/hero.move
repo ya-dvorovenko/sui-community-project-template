@@ -1,4 +1,4 @@
-module challenge_1::hero;
+module challenge::hero;
 
 use std::string::String;
 

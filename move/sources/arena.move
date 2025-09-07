@@ -1,6 +1,6 @@
-module challenge_1::arena;
+module challenge::arena;
 
-use challenge_1::hero::Hero;
+use challenge::hero::Hero;
 use sui::event;
 
 // ========= STRUCTS =========

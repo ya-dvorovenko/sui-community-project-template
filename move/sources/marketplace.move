@@ -1,6 +1,6 @@
-module challenge_1::marketplace;
+module challenge::marketplace;
 
-use challenge_1::hero::Hero;
+use challenge::hero::Hero;
 use std::string::String;
 use sui::coin::{Self, Coin};
 use sui::event;
