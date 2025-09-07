@@ -75,7 +75,7 @@ fun test_transfer_hero() {
     // Transfer the hero to recipient
     {
         let hero = ts::take_from_sender<Hero>(&scenario);
-        battleplace::transfer_hero(hero, RECIPIENT);
+        transfer::public_transfer(hero, RECIPIENT)
     };
 
     // Move to next transaction as recipient
