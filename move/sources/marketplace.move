@@ -6,7 +6,11 @@ use sui::coin::{Self, Coin};
 use sui::event;
 use sui::sui::SUI;
 
- // ========= STRUCTS =========
+// ========= ERRORS =========
+
+const EInvalidPayment: u64 = 1;
+
+// ========= STRUCTS =========
 
 public struct ListHero has key, store {
     id: UID,

@@ -83,7 +83,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
     // TODO: Implement hero purchase logic
     // Hints:
     // - Destructure list_hero to get id, nft, price, and seller
-    // - Use assert! to verify coin value equals listing price
+    // - Use assert! to verify coin value equals listing price, on failiure abort with `EInvalidPayment`
     // - Transfer coin to seller
     // - Transfer hero NFT to buyer (ctx.sender())
     // - Emit HeroBought event with transaction details

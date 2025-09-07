@@ -2,7 +2,7 @@
 module challenge_1::arena_tests {
     use challenge_1::arena::{Self, Arena};
     use challenge_1::hero::{Self, Hero};
-    use challenge_1::marketplace::{Self, ListHero, AdminCap};
+    use challenge_1::marketplace::{Self, ListHero, AdminCap, EInvalidPayment};
     use sui::coin;
     use sui::sui::SUI;
     use sui::test_scenario::{Self as ts, next_tx};
@@ -163,11 +163,83 @@ module challenge_1::arena_tests {
             ts::return_to_address(RECIPIENT, hero);
         };
 
-        // Verify seller received the coin payment
-        // In test scenarios, SUI coins are automatically handled, but we can verify the transfer occurred
-        // by checking that the coin was properly consumed (no error in the buy transaction)
-
         ts::end(scenario);
+    }
+
+    #[test]
+    #[expected_failure(abort_code = EInvalidPayment)]
+    fun test_buy_hero_payment_too_low() {
+        let mut scenario = ts::begin(SENDER);
+
+        // Create and list a hero
+        {
+            hero::create_hero(
+                b"Teo".to_string(),
+                b"https://example.com/teo.png".to_string(),
+                6000,
+                scenario.ctx(),
+            );
+        };
+
+        next_tx(&mut scenario, SENDER);
+
+        {
+            let hero = ts::take_from_sender<Hero>(&scenario);
+
+            marketplace::list_hero(hero, PRICE, scenario.ctx());
+        };
+
+        next_tx(&mut scenario, RECIPIENT);
+
+        // Buy the hero
+        {
+            let too_low_payment = coin::mint_for_testing<SUI>(PRICE / 2, scenario.ctx());
+            let list_hero = ts::take_shared<ListHero>(&scenario);
+
+            marketplace::buy_hero(list_hero, too_low_payment, scenario.ctx());
+        };
+
+        next_tx(&mut scenario, RECIPIENT);
+
+        scenario.end();
+    }
+
+    #[test]
+    #[expected_failure(abort_code = EInvalidPayment)]
+    fun test_buy_hero_payment_too_high() {
+        let mut scenario = ts::begin(SENDER);
+
+        // Create and list a hero
+        {
+            hero::create_hero(
+                b"Teo".to_string(),
+                b"https://example.com/teo.png".to_string(),
+                6000,
+                scenario.ctx(),
+            );
+        };
+
+        next_tx(&mut scenario, SENDER);
+
+        {
+            let hero = ts::take_from_sender<Hero>(&scenario);
+
+            marketplace::list_hero(hero, PRICE, scenario.ctx());
+        };
+
+        next_tx(&mut scenario, RECIPIENT);
+
+        // Buy the hero
+        {
+            let too_low_payment = coin::mint_for_testing<SUI>(PRICE * 2, scenario.ctx());
+            let list_hero = ts::take_shared<ListHero>(&scenario);
+
+            marketplace::buy_hero(list_hero, too_low_payment, scenario.ctx());
+        };
+
+        next_tx(&mut scenario, RECIPIENT);
+
+        scenario.end();
     }
 
     #[test]
