@@ -1,11 +1,12 @@
 #[test_only]
 module challenge_1::arena_tests {
     use challenge_1::arena::{Self, Arena};
-    use challenge_1::hero::{Self, Hero};
+    use challenge_1::hero::{Self, Hero, HeroMetadata};
     use challenge_1::marketplace::{Self, ListHero, AdminCap, EInvalidPayment};
     use sui::coin;
     use sui::sui::SUI;
     use sui::test_scenario::{Self as ts, next_tx};
+    use sui::test_utils::destroy;
 
     // Error codes for assertions
     const EHeroNameMismatch: u64 = 1;
@@ -42,6 +43,9 @@ module challenge_1::arena_tests {
         // Verify hero was created and test getter functions
         assert!(ts::has_most_recent_for_sender<Hero>(&scenario), EHeroNotCreated);
 
+        // Will revert if taking object which is not shared
+        let metadata = scenario.take_immutable<HeroMetadata>();
+
         {
             let hero = ts::take_from_sender<Hero>(&scenario);
             // Test getter functions
@@ -54,6 +58,7 @@ module challenge_1::arena_tests {
             ts::return_to_sender(&scenario, hero);
         };
 
+        destroy(metadata);
         ts::end(scenario);
     }
 
