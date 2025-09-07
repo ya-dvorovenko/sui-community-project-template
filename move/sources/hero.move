@@ -1,9 +1,6 @@
 module challenge_1::hero;
 
 use std::string::String;
-use sui::coin::{Self, Coin};
-use sui::event;
-use sui::sui::SUI;
 
 // ========= STRUCTS =========
 public struct Hero has key, store {
