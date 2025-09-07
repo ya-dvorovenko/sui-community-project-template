@@ -1,8 +1,15 @@
 #[test_only]
 module challenge_1::arena_tests {
-    use challenge_1::arena::{Self, Arena};
+    use challenge_1::arena::{Self, Arena, ArenaCreated, ArenaCompleted};
     use challenge_1::hero::{Self, Hero, HeroMetadata};
-    use challenge_1::marketplace::{Self, ListHero, AdminCap, EInvalidPayment};
+    use challenge_1::marketplace::{
+        Self,
+        ListHero,
+        AdminCap,
+        EInvalidPayment,
+        HeroListed,
+        HeroBought
+    };
     use sui::coin;
     use sui::sui::SUI;
     use sui::test_scenario::{Self as ts, next_tx};
@@ -18,6 +25,7 @@ module challenge_1::arena_tests {
     const EListHeroNotShared: u64 = 7;
     const EArenaNotShared: u64 = 8;
     const EHeroAmountMismatch: u64 = 9;
+    const EDidNotEmitEvent: u64 = 10;
 
     const SENDER: address = @0x1;
     const RECIPIENT: address = @0x2;
@@ -120,6 +128,7 @@ module challenge_1::arena_tests {
 
         // Verify ListHero object was created and shared
         assert!(ts::has_most_recent_shared<ListHero>(), EListHeroNotShared);
+        assert!(sui::event::events_by_type<HeroListed>().length() == 1, EDidNotEmitEvent);
 
         ts::end(scenario);
     }
@@ -160,6 +169,7 @@ module challenge_1::arena_tests {
 
         // Verify buyer received the hero
         assert!(ts::has_most_recent_for_address<Hero>(RECIPIENT), EHeroNotTransferred);
+        assert!(sui::event::events_by_type<HeroBought>().length() == 1, EDidNotEmitEvent);
 
         {
             let hero = ts::take_from_address<Hero>(&scenario, RECIPIENT);
@@ -273,6 +283,7 @@ module challenge_1::arena_tests {
 
         // Verify Arena object was created and shared
         assert!(ts::has_most_recent_shared<Arena>(), EArenaNotShared);
+        assert!(sui::event::events_by_type<ArenaCreated>().length() == 1, EDidNotEmitEvent);
 
         ts::end(scenario);
     }
@@ -436,6 +447,8 @@ module challenge_1::arena_tests {
         next_tx(&mut scenario, SENDER);
         let hero_ids_sender = ts::ids_for_sender<Hero>(&scenario);
         assert!(hero_ids_sender.length() == 0, EHeroNotTransferred);
+
+        assert!(sui::event::events_by_type<ArenaCompleted>().length() == 1, EDidNotEmitEvent);
 
         ts::end(scenario);
     }
