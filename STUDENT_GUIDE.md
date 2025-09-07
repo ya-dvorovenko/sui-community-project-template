@@ -315,28 +315,35 @@ export const transferAdminCap = (adminCapId: string, to: string) => {
 
 ## 🚀 Development Environment
 
-1. **Installation**
-
-   ```bash
-   cd ui
-   npm install
-   ```
-
-2. **Development Server**
-
-   ```bash
-   npm run dev
-   ```
-
-3. **Building the Move Contract**
+1. **Building the Move Contracts**
 
    ```bash
    cd move
    sui move build
    ```
 
-4. **Deploying the Contract**
+2. **Deploying the Contracts**
 
    ```bash
    sui client publish
+   ```
+
+3. **Installing User Interface Dependencies**
+
+   ```bash
+   cd ui
+   npm install
+   ```
+
+4. **Configure the User Interface**
+
+   ```typescript
+   // Set this value to the Package ID in the transaction summary of step 2
+   const PACKAGE_ID = ''
+   ```
+
+5. **Run the User Interface**
+
+   ```bash
+   npm run dev
    ```
