@@ -328,18 +328,19 @@ export const transferAdminCap = (adminCapId: string, to: string) => {
    sui client publish
    ```
 
-3. **Installing User Interface Dependencies**
+3. **Configure the User Interface**
+
+   ```typescript
+   // Set this value to the Package ID in the transaction summary of step 2
+   // File `ui/src/networkConfig.ts`
+   const PACKAGE_ID = ''
+   ```
+
+4. **Installing User Interface Dependencies**
 
    ```bash
    cd ui
    npm install
-   ```
-
-4. **Configure the User Interface**
-
-   ```typescript
-   // Set this value to the Package ID in the transaction summary of step 2
-   const PACKAGE_ID = ''
    ```
 
 5. **Run the User Interface**
