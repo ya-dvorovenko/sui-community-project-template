@@ -242,7 +242,6 @@ export const battle = (packageId: string, heroId: string, arenaId: string) => {
   // - Use tx.object() for both hero and battle place objects
   // - The battle winner is determined by hero power comparison
   // - Winner takes both heroes
-  // - If it's a tie, both heros returned to original owners
 
   return tx
 }
