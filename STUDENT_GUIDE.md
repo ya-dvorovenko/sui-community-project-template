@@ -13,8 +13,8 @@ fun init(ctx: &mut TxContext) {
     // TODO: Initialize the module by creating AdminCap
     // Hints:
     // - Create AdminCap struct with object::new(ctx)
-    // - Transfer it to the module publisher (ctx.sender())
-    // - This runs once when the module is published
+    // - Transfer it to the package publisher (ctx.sender())
+    // - This runs once when the package is published
 }
 ```
 
