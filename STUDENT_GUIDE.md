@@ -4,9 +4,9 @@ Below are the TODOs and hints you need to complete.
 
 ## 📋 What You Need to Complete
 
-### Move Smart Contract (`move/sources/battleplace.move`)
+### Move Smart Contract Functions (`move/sources/battleplace.move`)
 
-#### 1. **init** function
+#### 1. **init**
 
 ```move
 fun init(ctx: &mut TxContext) {
@@ -18,7 +18,7 @@ fun init(ctx: &mut TxContext) {
 }
 ```
 
-#### 2. **create_hero** function
+#### 2. **create_hero**
 
 ```move
 public fun create_hero(name: String, image_url: String, power: u64, ctx: &mut TxContext) {
@@ -34,7 +34,7 @@ public fun create_hero(name: String, image_url: String, power: u64, ctx: &mut Tx
 }
 ```
 
-#### 3. **create_battle_place** function
+#### 3. **create_battle_place**
 
 ```move
 public fun create_battle_place(hero: Hero, ctx: &mut TxContext) {
@@ -48,7 +48,7 @@ public fun create_battle_place(hero: Hero, ctx: &mut TxContext) {
 }
 ```
 
-#### 4. **battle** function
+#### 4. **battle**
 
 ```move
 public fun battle(hero: Hero, battle_place: BattlePlace, ctx: &mut TxContext) {
@@ -63,7 +63,7 @@ public fun battle(hero: Hero, battle_place: BattlePlace, ctx: &mut TxContext) {
 }
 ```
 
-#### 5. **list_hero** function
+#### 5. **list_hero**
 
 ```move
 public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
@@ -76,7 +76,7 @@ public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
 }
 ```
 
-#### 6. **buy_hero** function
+#### 6. **buy_hero**
 
 ```move
 public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
@@ -91,7 +91,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
 }
 ```
 
-#### 7. **delist** function (Admin Only)
+#### 7. **delist** (Admin Only)
 
 ```move
 public fun delist(_: &AdminCap, list_hero: ListHero) {
@@ -104,7 +104,7 @@ public fun delist(_: &AdminCap, list_hero: ListHero) {
 }
 ```
 
-#### 8. **change_the_price** function (Admin Only)
+#### 8. **change_the_price** (Admin Only)
 
 ```move
 public fun change_the_price(_: &AdminCap, list_hero: &mut ListHero, new_price: u64) {
