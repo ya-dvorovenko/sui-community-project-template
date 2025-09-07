@@ -31,7 +31,7 @@ public fun create_arena(hero: Hero, ctx: &mut TxContext) {
     // - Use object::new(ctx) for unique ID
     // - Set warrior field to the hero parameter
     // - Set owner to ctx.sender()
-    // - Emit ArenaCreated event with ID and timestamp
+    // - Emit ArenaCreated event with arena ID and timestamp
     // - Use transfer::share_object() to make it publicly accessible
 }
 ```
