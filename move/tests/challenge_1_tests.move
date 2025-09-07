@@ -452,4 +452,62 @@ module challenge_1::arena_tests {
 
         ts::end(scenario);
     }
+
+    #[test]
+    fun test_battle_tie() {
+        let mut scenario = ts::begin(SENDER);
+
+        // SENDER creates a hero and battle place
+        {
+            hero::create_hero(
+                b"Kostas".to_string(),
+                b"https://example.com/kostas.png".to_string(),
+                1234,
+                scenario.ctx(),
+            );
+        };
+
+        next_tx(&mut scenario, SENDER);
+
+        {
+            let hero = ts::take_from_sender<Hero>(&scenario);
+            arena::create_arena(hero, scenario.ctx());
+        };
+
+        next_tx(&mut scenario, RECIPIENT);
+
+        {
+            hero::create_hero(
+                b"Adeniyi".to_string(),
+                b"https://example.com/adeniyi.png".to_string(),
+                1234,
+                scenario.ctx(),
+            );
+        };
+
+        next_tx(&mut scenario, RECIPIENT);
+
+        {
+            let hero = ts::take_from_sender<Hero>(&scenario);
+            let arena = ts::take_shared<Arena>(&scenario);
+
+            arena::battle(hero, arena, scenario.ctx());
+        };
+
+        next_tx(&mut scenario, RECIPIENT);
+
+        // Tie scenario (1234 == 1234)
+        // RECIPIENT should receive his hero back
+        let hero_ids_recipient = ts::ids_for_sender<Hero>(&scenario);
+        assert!(hero_ids_recipient.length() == 1, EHeroAmountMismatch);
+
+        // SENDER should receive his hero back
+        next_tx(&mut scenario, SENDER);
+        let hero_ids_sender = ts::ids_for_sender<Hero>(&scenario);
+        assert!(hero_ids_sender.length() == 1, EHeroNotTransferred);
+
+        assert!(sui::event::events_by_type<ArenaCompleted>().length() == 1, EDidNotEmitEvent);
+
+        ts::end(scenario);
+    }
 }
