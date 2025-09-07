@@ -5,7 +5,7 @@ import { WalletStatus } from "./components/WalletStatus";
 import { CreateHero } from "./components/CreateHero";
 import { OwnedObjects } from "./components/OwnedObjects";
 import SharedObjects from "./components/SharedObjects";
-import BattlePlaces from "./components/BattlePlaces";
+import Arenas from "./components/Arenas";
 import EventsHistory from "./components/EventsHistory";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
         style={{
           borderBottom: "1px solid var(--gray-a2)",
           background: "var(--color-background)",
-          zIndex: 10
+          zIndex: 10,
         }}
       >
         <Box>
@@ -37,7 +37,6 @@ function App() {
       {/* Main Content */}
       <Container size="4" style={{ padding: "24px" }}>
         <Flex direction="column" gap="8">
-          
           {/* Wallet Status Section */}
           <Box>
             <WalletStatus />
@@ -54,21 +53,27 @@ function App() {
 
           {/* Owned Heroes Section */}
           <Box>
-            <OwnedObjects refreshKey={refreshKey} setRefreshKey={setRefreshKey} />
+            <OwnedObjects
+              refreshKey={refreshKey}
+              setRefreshKey={setRefreshKey}
+            />
           </Box>
 
           <Separator size="4" />
 
           {/* Marketplace Section */}
           <Box>
-            <SharedObjects refreshKey={refreshKey} setRefreshKey={setRefreshKey} />
+            <SharedObjects
+              refreshKey={refreshKey}
+              setRefreshKey={setRefreshKey}
+            />
           </Box>
 
           <Separator size="4" />
 
           {/* Battle Arena Section */}
           <Box>
-            <BattlePlaces refreshKey={refreshKey} setRefreshKey={setRefreshKey} />
+            <Arenas refreshKey={refreshKey} setRefreshKey={setRefreshKey} />
           </Box>
 
           <Separator size="4" />
@@ -77,7 +82,6 @@ function App() {
           <Box>
             <EventsHistory />
           </Box>
-
         </Flex>
       </Container>
     </>

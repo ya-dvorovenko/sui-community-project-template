@@ -4,7 +4,7 @@ export const createHero = (packageId: string, name: string, imageUrl: string, po
   const tx = new Transaction();
   
   tx.moveCall({
-    target: `${packageId}::battleplace::create_hero`,
+    target: `${packageId}::hero::create_hero`,
     arguments: [
       tx.pure.string(name),
       tx.pure.string(imageUrl),

@@ -28,7 +28,7 @@ export function WalletStatus() {
     {
       owner: account?.address as string,
       filter: {
-        StructType: `${packageId}::battleplace::AdminCap`
+        StructType: `${packageId}::marketplace::AdminCap`
       },
       options: {
         showContent: true,

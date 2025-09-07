@@ -4,21 +4,9 @@ Below are the TODOs and hints you need to complete.
 
 ## 📋 What You Need to Complete
 
-### Move Smart Contract Functions (`move/sources/battleplace.move`)
+### Move Smart Contract Functions
 
-#### 1. **init**
-
-```move
-fun init(ctx: &mut TxContext) {
-    // TODO: Initialize the module by creating AdminCap
-    // Hints:
-    // - Create AdminCap struct with object::new(ctx)
-    // - Transfer it to the package publisher (ctx.sender())
-    // - This runs once when the package is published
-}
-```
-
-#### 2. **create_hero**
+#### 1. **create_hero** (`move/sources/hero.move`)
 
 ```move
 public fun create_hero(name: String, image_url: String, power: u64, ctx: &mut TxContext) {
@@ -34,36 +22,48 @@ public fun create_hero(name: String, image_url: String, power: u64, ctx: &mut Tx
 }
 ```
 
-#### 3. **create_battle_place**
+#### 3. **create_arena** (`move/sources/arena.move`)
 
 ```move
-public fun create_battle_place(hero: Hero, ctx: &mut TxContext) {
-    // TODO: Create a BattlePlace struct
+public fun create_arena(hero: Hero, ctx: &mut TxContext) {
+    // TODO: Create a Arena struct
     // Hints:
     // - Use object::new(ctx) for unique ID
     // - Set warrior field to the hero parameter
     // - Set owner to ctx.sender()
-    // - Emit BattlePlaceCreated event with ID and timestamp
+    // - Emit ArenaCreated event with ID and timestamp
     // - Use transfer::share_object() to make it publicly accessible
 }
 ```
 
-#### 4. **battle**
+#### 4. **battle** (`move/sources/arena.move`)
 
 ```move
-public fun battle(hero: Hero, battle_place: BattlePlace, ctx: &mut TxContext) {
+public fun battle(hero: Hero, arena: Arena, ctx: &mut TxContext) {
     // TODO: Implement battle logic
     // Hints:
-    // - Destructure battle_place to get id, warrior, and owner
+    // - Destructure arena to get id, warrior, and owner
     // - Compare hero.power with warrior.power
     // - If hero wins: both heroes go to ctx.sender()
     // - If warrior wins: both heroes go to battle place owner
-    // - Emit BattlePlaceCompleted event with winner/loser IDs
+    // - Emit ArenaCompleted event with winner/loser IDs
     // - Don't forget to delete the battle place ID at the end
 }
 ```
 
-#### 5. **list_hero**
+#### 2. **init** (`move/sources/marketplace.move`)
+
+```move
+fun init(ctx: &mut TxContext) {
+    // TODO: Initialize the module by creating AdminCap
+    // Hints:
+    // - Create AdminCap struct with object::new(ctx)
+    // - Transfer it to the package publisher (ctx.sender())
+    // - This runs once when the package is published
+}
+```
+
+#### 5. **list_hero** (`move/sources/marketplace.move`)
 
 ```move
 public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
@@ -76,7 +76,7 @@ public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
 }
 ```
 
-#### 6. **buy_hero**
+#### 6. **buy_hero** (`move/sources/marketplace.move`)
 
 ```move
 public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
@@ -91,7 +91,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
 }
 ```
 
-#### 7. **delist** (Admin Only)
+#### 7. **delist** (Admin Only) (`move/sources/marketplace.move`)
 
 ```move
 public fun delist(_: &AdminCap, list_hero: ListHero) {
@@ -104,7 +104,7 @@ public fun delist(_: &AdminCap, list_hero: ListHero) {
 }
 ```
 
-#### 8. **change_the_price** (Admin Only)
+#### 8. **change_the_price** (Admin Only) (`move/sources/marketplace.move`)
 
 ```move
 public fun change_the_price(_: &AdminCap, list_hero: &mut ListHero, new_price: u64) {
@@ -130,12 +130,12 @@ export const createHero = (
   const tx = new Transaction()
 
   // TODO: Add moveCall to create a hero
-  // Function: `${packageId}::battleplace::create_hero`
+  // Function: `${packageId}::hero::create_hero`
   // Arguments: name (string), imageUrl (string), power (u64)
   // Hints:
   // - Use tx.pure.string() for string arguments
   // - Use tx.pure.u64() for number arguments (convert power to BigInt)
-  // - The target module is 'battleplace', not 'hero'
+  // - The target module is 'arena', not 'hero'
 
   return tx
 }
@@ -159,7 +159,7 @@ export const buyHero = (
   // const [paymentCoin] = ?
 
   // TODO: Add moveCall to buy a hero
-  // Function: `${packageId}::battleplace::buy_hero`
+  // Function: `${packageId}::marketplace::buy_hero`
   // Arguments: listHeroId (object), paymentCoin (coin)
   // Hints:
   // - Use tx.object() for the ListHero object
@@ -183,7 +183,7 @@ export const listHero = (
   // const priceInMist = ?
 
   // TODO: Add moveCall to list a hero for sale
-  // Function: `${packageId}::battleplace::list_hero`
+  // Function: `${packageId}::marketplace::list_hero`
   // Arguments: heroId (object), priceInMist (u64)
   // Hints:
   // - Use tx.object() for the hero object
@@ -212,14 +212,14 @@ export const transferHero = (heroId: string, to: string) => {
 }
 ```
 
-#### 5. **Create Battle Place** (`ui/src/utility/battle/create_battle_place.ts`)
+#### 5. **Create Battle Place** (`ui/src/utility/battle/create_arena.ts`)
 
 ```typescript
-export const createBattlePlace = (packageId: string, heroId: string) => {
+export const createArena = (packageId: string, heroId: string) => {
   const tx = new Transaction()
 
   // TODO: Add moveCall to create a battle place
-  // Function: `${packageId}::battleplace::create_battle_place`
+  // Function: `${packageId}::arena::create_arena`
   // Arguments: heroId (object)
   // Hints:
   // - Use tx.object() for the hero object
@@ -232,16 +232,12 @@ export const createBattlePlace = (packageId: string, heroId: string) => {
 #### 6. **Battle** (`ui/src/utility/battle/battle.ts`)
 
 ```typescript
-export const battle = (
-  packageId: string,
-  heroId: string,
-  battlePlaceId: string
-) => {
+export const battle = (packageId: string, heroId: string, arenaId: string) => {
   const tx = new Transaction()
 
   // TODO: Add moveCall to start a battle
-  // Function: `${packageId}::battleplace::battle`
-  // Arguments: heroId (object), battlePlaceId (object)
+  // Function: `${packageId}::arena::battle`
+  // Arguments: heroId (object), arenaId (object)
   // Hints:
   // - Use tx.object() for both hero and battle place objects
   // - The battle winner is determined by hero power comparison
@@ -262,7 +258,7 @@ export const delist = (
   const tx = new Transaction()
 
   // TODO: Add moveCall to delist a hero (Admin only)
-  // Function: `${packageId}::battleplace::delist`
+  // Function: `${packageId}::marketplace::delist`
   // Arguments: adminCapId (object), listHeroId (object)
   // Hints:
   // - Use tx.object() for both objects
@@ -288,7 +284,7 @@ export const changePrice = (
   // const newPriceInMist = ?
 
   // TODO: Add moveCall to change hero price (Admin only)
-  // Function: `${packageId}::battleplace::change_the_price`
+  // Function: `${packageId}::marketplace::change_the_price`
   // Arguments: adminCapId (object), listHeroId (object), newPriceInMist (u64)
   // Hints:
   // - Use tx.object() for objects

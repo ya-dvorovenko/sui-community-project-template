@@ -1,24 +1,47 @@
-import { useCurrentAccount, useSuiClientQuery, useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
-import { Flex, Heading, Text, Card, Grid, Button, TextField, Badge, Tabs } from "@radix-ui/themes";
+import {
+  useCurrentAccount,
+  useSuiClientQuery,
+  useSignAndExecuteTransaction,
+  useSuiClient,
+} from "@mysten/dapp-kit";
+import {
+  Flex,
+  Heading,
+  Text,
+  Card,
+  Grid,
+  Button,
+  TextField,
+  Badge,
+  Tabs,
+} from "@radix-ui/themes";
 import { useState } from "react";
 import { useNetworkVariable } from "../networkConfig";
 import { Hero } from "../types/hero";
 import { transferHero } from "../utility/helpers/transfer_hero";
 import { listHero } from "../utility/marketplace/list_hero";
-import { createBattlePlace } from "../utility/battle/create_battle_place";
+import { createArena } from "../utility/arena/create_arena";
 import { RefreshProps } from "../types/props";
 
 export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
   const account = useCurrentAccount();
   const packageId = useNetworkVariable("packageId");
   const suiClient = useSuiClient();
-  const [transferAddress, setTransferAddress] = useState<{ [key: string]: string }>({});
+  const [transferAddress, setTransferAddress] = useState<{
+    [key: string]: string;
+  }>({});
   const [listPrice, setListPrice] = useState<{ [key: string]: string }>({});
-  const [isTransferring, setIsTransferring] = useState<{ [key: string]: boolean }>({});
+  const [isTransferring, setIsTransferring] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [isListing, setIsListing] = useState<{ [key: string]: boolean }>({});
-  const [isCreatingBattle, setIsCreatingBattle] = useState<{ [key: string]: boolean }>({});
-  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({});
-  
+  const [isCreatingBattle, setIsCreatingBattle] = useState<{
+    [key: string]: boolean;
+  }>({});
+  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
+    {},
+  );
+
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
 
   const { data, isPending, error } = useSuiClientQuery(
@@ -26,33 +49,33 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
     {
       owner: account?.address as string,
       filter: {
-        StructType: `${packageId}::battleplace::Hero`
+        StructType: `${packageId}::hero::Hero`,
       },
       options: {
         showContent: true,
-        showType: true
-      }
+        showType: true,
+      },
     },
     {
       enabled: !!account && !!packageId,
       queryKey: ["getOwnedObjects", account?.address, packageId, refreshKey],
-    }
+    },
   );
 
   const copyToClipboard = (text: string, heroId: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedStates(prev => ({ ...prev, [heroId]: true }));
-    
+    setCopiedStates((prev) => ({ ...prev, [heroId]: true }));
+
     setTimeout(() => {
-      setCopiedStates(prev => ({ ...prev, [heroId]: false }));
+      setCopiedStates((prev) => ({ ...prev, [heroId]: false }));
     }, 2000);
   };
 
   const handleTransfer = (heroId: string, address: string) => {
     if (!address.trim() || !packageId) return;
-    
-    setIsTransferring(prev => ({ ...prev, [heroId]: true }));
-    
+
+    setIsTransferring((prev) => ({ ...prev, [heroId]: true }));
+
     const tx = transferHero(heroId, address);
     signAndExecute(
       { transaction: tx },
@@ -65,23 +88,23 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
               showObjectChanges: true,
             },
           });
-          
-          setTransferAddress(prev => ({ ...prev, [heroId]: "" }));
+
+          setTransferAddress((prev) => ({ ...prev, [heroId]: "" }));
           setRefreshKey(refreshKey + 1);
-          setIsTransferring(prev => ({ ...prev, [heroId]: false }));
+          setIsTransferring((prev) => ({ ...prev, [heroId]: false }));
         },
         onError: () => {
-          setIsTransferring(prev => ({ ...prev, [heroId]: false }));
-        }
-      }
+          setIsTransferring((prev) => ({ ...prev, [heroId]: false }));
+        },
+      },
     );
   };
 
   const handleList = (heroId: string, price: string) => {
     if (!price.trim() || !packageId) return;
-    
-    setIsListing(prev => ({ ...prev, [heroId]: true }));
-    
+
+    setIsListing((prev) => ({ ...prev, [heroId]: true }));
+
     const tx = listHero(packageId, heroId, price);
     signAndExecute(
       { transaction: tx },
@@ -94,24 +117,24 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
               showObjectChanges: true,
             },
           });
-          
-          setListPrice(prev => ({ ...prev, [heroId]: "" }));
+
+          setListPrice((prev) => ({ ...prev, [heroId]: "" }));
           setRefreshKey(refreshKey + 1);
-          setIsListing(prev => ({ ...prev, [heroId]: false }));
+          setIsListing((prev) => ({ ...prev, [heroId]: false }));
         },
         onError: () => {
-          setIsListing(prev => ({ ...prev, [heroId]: false }));
-        }
-      }
+          setIsListing((prev) => ({ ...prev, [heroId]: false }));
+        },
+      },
     );
   };
 
   const handleCreateBattle = (heroId: string) => {
     if (!packageId) return;
-    
-    setIsCreatingBattle(prev => ({ ...prev, [heroId]: true }));
-    
-    const tx = createBattlePlace(packageId, heroId);
+
+    setIsCreatingBattle((prev) => ({ ...prev, [heroId]: true }));
+
+    const tx = createArena(packageId, heroId);
     signAndExecute(
       { transaction: tx },
       {
@@ -123,14 +146,14 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
               showObjectChanges: true,
             },
           });
-          
+
           setRefreshKey(refreshKey + 1);
-          setIsCreatingBattle(prev => ({ ...prev, [heroId]: false }));
+          setIsCreatingBattle((prev) => ({ ...prev, [heroId]: false }));
         },
         onError: () => {
-          setIsCreatingBattle(prev => ({ ...prev, [heroId]: false }));
-        }
-      }
+          setIsCreatingBattle((prev) => ({ ...prev, [heroId]: false }));
+        },
+      },
     );
   };
 
@@ -158,12 +181,14 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
     );
   }
 
-  const heroes = data.data.filter(obj => obj.data?.content && 'fields' in obj.data.content);
+  const heroes = data.data.filter(
+    (obj) => obj.data?.content && "fields" in obj.data.content,
+  );
 
   return (
     <Flex direction="column" gap="4">
       <Heading size="6">Your Heroes ({heroes.length})</Heading>
-      
+
       {heroes.length === 0 ? (
         <Card>
           <Text>No heroes found in your wallet</Text>
@@ -179,30 +204,38 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
               <Card key={heroId} style={{ padding: "16px" }}>
                 <Flex direction="column" gap="3">
                   {/* Hero Image */}
-                  <img 
-                    src={fields.image_url} 
+                  <img
+                    src={fields.image_url}
                     alt={fields.name}
-                    style={{ 
-                      width: "100%", 
-                      height: "200px", 
-                      objectFit: "cover", 
-                      borderRadius: "8px" 
+                    style={{
+                      width: "100%",
+                      height: "200px",
+                      objectFit: "cover",
+                      borderRadius: "8px",
                     }}
                   />
-                  
+
                   {/* Hero Info */}
                   <Flex direction="column" gap="2">
-                    <Text size="5" weight="bold">{fields.name}</Text>
-                    <Badge color="blue" size="2">Power: {fields.power}</Badge>
-                    
+                    <Text size="5" weight="bold">
+                      {fields.name}
+                    </Text>
+                    <Badge color="blue" size="2">
+                      Power: {fields.power}
+                    </Badge>
+
                     <Flex align="center" gap="2">
-                      <Text size="3" color="gray" style={{ 
-                        fontFamily: "monospace"
-                      }}>
+                      <Text
+                        size="3"
+                        color="gray"
+                        style={{
+                          fontFamily: "monospace",
+                        }}
+                      >
                         {heroId.slice(0, 6)}...{heroId.slice(-6)}
                       </Text>
-                      <Button 
-                        size="1" 
+                      <Button
+                        size="1"
                         variant="ghost"
                         onClick={() => copyToClipboard(heroId, heroId)}
                         color={copiedStates[heroId] ? "green" : undefined}
@@ -225,18 +258,27 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
                         <TextField.Root
                           placeholder="Recipient address"
                           value={transferAddress[heroId] || ""}
-                          onChange={(e) => setTransferAddress(prev => ({
-                            ...prev,
-                            [heroId]: e.target.value
-                          }))}
+                          onChange={(e) =>
+                            setTransferAddress((prev) => ({
+                              ...prev,
+                              [heroId]: e.target.value,
+                            }))
+                          }
                         />
-                        <Button 
-                          onClick={() => handleTransfer(heroId, transferAddress[heroId])}
-                          disabled={!transferAddress[heroId]?.trim() || isTransferring[heroId]}
+                        <Button
+                          onClick={() =>
+                            handleTransfer(heroId, transferAddress[heroId])
+                          }
+                          disabled={
+                            !transferAddress[heroId]?.trim() ||
+                            isTransferring[heroId]
+                          }
                           loading={isTransferring[heroId]}
                           color="blue"
                         >
-                          {isTransferring[heroId] ? "Transferring..." : "Transfer Hero"}
+                          {isTransferring[heroId]
+                            ? "Transferring..."
+                            : "Transfer Hero"}
                         </Button>
                       </Flex>
                     </Tabs.Content>
@@ -247,14 +289,18 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
                           placeholder="Price in SUI"
                           type="number"
                           value={listPrice[heroId] || ""}
-                          onChange={(e) => setListPrice(prev => ({
-                            ...prev,
-                            [heroId]: e.target.value
-                          }))}
+                          onChange={(e) =>
+                            setListPrice((prev) => ({
+                              ...prev,
+                              [heroId]: e.target.value,
+                            }))
+                          }
                         />
-                        <Button 
+                        <Button
                           onClick={() => handleList(heroId, listPrice[heroId])}
-                          disabled={!listPrice[heroId]?.trim() || isListing[heroId]}
+                          disabled={
+                            !listPrice[heroId]?.trim() || isListing[heroId]
+                          }
                           loading={isListing[heroId]}
                           color="green"
                         >
@@ -266,15 +312,18 @@ export function OwnedObjects({ refreshKey, setRefreshKey }: RefreshProps) {
                     <Tabs.Content value="battle">
                       <Flex direction="column" gap="2" mt="3">
                         <Text size="2" color="gray">
-                          Create a battle place for other players to challenge your hero.
+                          Create a battle place for other players to challenge
+                          your hero.
                         </Text>
-                        <Button 
+                        <Button
                           onClick={() => handleCreateBattle(heroId)}
                           disabled={isCreatingBattle[heroId]}
                           loading={isCreatingBattle[heroId]}
                           color="orange"
                         >
-                          {isCreatingBattle[heroId] ? "Creating Battle Place..." : "Create Battle Place"}
+                          {isCreatingBattle[heroId]
+                            ? "Creating Battle Place..."
+                            : "Create Battle Place"}
                         </Button>
                       </Flex>
                     </Tabs.Content>
