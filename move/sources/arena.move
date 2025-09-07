@@ -1,10 +1,7 @@
 module challenge_1::arena;
 
 use challenge_1::hero::Hero;
-use std::string::String;
-use sui::coin::{Self, Coin};
 use sui::event;
-use sui::sui::SUI;
 
 // ========= STRUCTS =========
 
