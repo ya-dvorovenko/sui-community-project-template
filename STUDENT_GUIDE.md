@@ -7,6 +7,7 @@ Below are the TODOs and hints you need to complete.
 ### Move Smart Contract (`move/sources/battleplace.move`)
 
 #### 1. **init** function
+
 ```move
 fun init(ctx: &mut TxContext) {
     // TODO: Initialize the module by creating AdminCap
@@ -18,6 +19,7 @@ fun init(ctx: &mut TxContext) {
 ```
 
 #### 2. **create_hero** function
+
 ```move
 public fun create_hero(name: String, image_url: String, power: u64, ctx: &mut TxContext) {
     // TODO: Create a new Hero struct with the given parameters
@@ -25,7 +27,7 @@ public fun create_hero(name: String, image_url: String, power: u64, ctx: &mut Tx
     // - Use object::new(ctx) to create a unique ID
     // - Set name, image_url, and power fields
     // - Transfer the hero to the transaction sender
-    // 
+    //
     // Also create HeroMetadata and freeze it for tracking
     // - Use ctx.epoch_timestamp_ms() for timestamp
     // - Use transfer::freeze_object() to make metadata immutable
@@ -33,6 +35,7 @@ public fun create_hero(name: String, image_url: String, power: u64, ctx: &mut Tx
 ```
 
 #### 3. **create_battle_place** function
+
 ```move
 public fun create_battle_place(hero: Hero, ctx: &mut TxContext) {
     // TODO: Create a BattlePlace struct
@@ -46,6 +49,7 @@ public fun create_battle_place(hero: Hero, ctx: &mut TxContext) {
 ```
 
 #### 4. **battle** function
+
 ```move
 public fun battle(hero: Hero, battle_place: BattlePlace, ctx: &mut TxContext) {
     // TODO: Implement battle logic
@@ -60,6 +64,7 @@ public fun battle(hero: Hero, battle_place: BattlePlace, ctx: &mut TxContext) {
 ```
 
 #### 5. **list_hero** function
+
 ```move
 public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
     // TODO: Create a ListHero struct for marketplace
@@ -72,6 +77,7 @@ public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
 ```
 
 #### 6. **buy_hero** function
+
 ```move
 public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
     // TODO: Implement hero purchase logic
@@ -86,6 +92,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
 ```
 
 #### 7. **delist** function (Admin Only)
+
 ```move
 public fun delist(list_hero: ListHero, _: &AdminCap) {
     // TODO: Implement admin delist functionality
@@ -98,6 +105,7 @@ public fun delist(list_hero: ListHero, _: &AdminCap) {
 ```
 
 #### 8. **change_the_price** function (Admin Only)
+
 ```move
 public fun change_the_price(list_hero: &mut ListHero, new_price: u64, _: &AdminCap) {
     // TODO: Update the listing price
@@ -111,53 +119,69 @@ public fun change_the_price(list_hero: &mut ListHero, new_price: u64, _: &AdminC
 ### Frontend Utility Scripts
 
 #### 1. **Create Hero** (`ui/src/utility/heroes/create_hero.ts`)
+
 ```typescript
-export const createHero = (packageId: string, name: string, imageUrl: string, power: string) => {
-  const tx = new Transaction();
-  
+export const createHero = (
+  packageId: string,
+  name: string,
+  imageUrl: string,
+  power: string
+) => {
+  const tx = new Transaction()
+
   // TODO: Add moveCall to create a hero
   // Function: `${packageId}::battleplace::create_hero`
   // Arguments: name (string), imageUrl (string), power (u64)
-  // Hints: 
+  // Hints:
   // - Use tx.pure.string() for string arguments
   // - Use tx.pure.u64() for number arguments (convert power to BigInt)
   // - The target module is 'battleplace', not 'hero'
-  
-  return tx;
-};
+
+  return tx
+}
 ```
 
 #### 2. **Buy Hero** (`ui/src/utility/marketplace/buy_hero.ts`)
+
 ```typescript
-export const buyHero = (packageId: string, listHeroId: string, priceInSui: string) => {
-  const tx = new Transaction();
-  
+export const buyHero = (
+  packageId: string,
+  listHeroId: string,
+  priceInSui: string
+) => {
+  const tx = new Transaction()
+
   // TODO: Convert SUI to MIST (1 SUI = 1,000,000,000 MIST)
   // const priceInMist = ?
-  
+
   // TODO: Split coin for exact payment
   // Use tx.splitCoins(tx.gas, [priceInMist]) to create a payment coin
   // const [paymentCoin] = ?
-  
+
   // TODO: Add moveCall to buy a hero
   // Function: `${packageId}::battleplace::buy_hero`
   // Arguments: listHeroId (object), paymentCoin (coin)
   // Hints:
   // - Use tx.object() for the ListHero object
   // - Use the paymentCoin from splitCoins for payment
-  
-  return tx;
-};
+
+  return tx
+}
 ```
 
 #### 3. **List Hero** (`ui/src/utility/marketplace/list_hero.ts`)
+
 ```typescript
-export const listHero = (packageId: string, heroId: string, priceInSui: string) => {
-  const tx = new Transaction();
-  
+export const listHero = (
+  packageId: string,
+  heroId: string,
+  priceInSui: string
+) => {
+  const tx = new Transaction()
+
   // TODO: Convert SUI to MIST (1 SUI = 1,000,000,000 MIST)
   // const priceInMist = ?
-  
+
   // TODO: Add moveCall to list a hero for sale
   // Function: `${packageId}::battleplace::list_hero`
   // Arguments: heroId (object), priceInMist (u64)
@@ -165,16 +189,17 @@ export const listHero = (packageId: string, heroId: string, priceInSui: string) 
   // - Use tx.object() for the hero object
   // - Use tx.pure.u64() for the price in MIST
   // - Remember: 1 SUI = 1_000_000_000 MIST
-  
-  return tx;
-};
+
+  return tx
+}
 ```
 
 #### 4. **Transfer Hero** (`ui/src/utility/helpers/transfer_hero.ts`)
+
 ```typescript
 export const transferHero = (heroId: string, to: string) => {
-  const tx = new Transaction();
-  
+  const tx = new Transaction()
+
   // TODO: Transfer hero to another address
   // Use tx.transferObjects() method
   // Arguments: heroId (object), to (address)
@@ -182,32 +207,38 @@ export const transferHero = (heroId: string, to: string) => {
   // - Use tx.object() for object IDs
   // - Use "to" for the address
   // - This is a simple object transfer, not a moveCall
-  
-  return tx;
-};
+
+  return tx
+}
 ```
 
 #### 5. **Create Battle Place** (`ui/src/utility/battle/create_battle_place.ts`)
+
 ```typescript
 export const createBattlePlace = (packageId: string, heroId: string) => {
-  const tx = new Transaction();
-  
+  const tx = new Transaction()
+
   // TODO: Add moveCall to create a battle place
   // Function: `${packageId}::battleplace::create_battle_place`
   // Arguments: heroId (object)
   // Hints:
   // - Use tx.object() for the hero object
   // - This creates a shared object that others can battle against
-  
-  return tx;
-};
+
+  return tx
+}
 ```
 
 #### 6. **Battle** (`ui/src/utility/battle/battle.ts`)
+
 ```typescript
-export const battle = (packageId: string, heroId: string, battlePlaceId: string) => {
-  const tx = new Transaction();
-  
+export const battle = (
+  packageId: string,
+  heroId: string,
+  battlePlaceId: string
+) => {
+  const tx = new Transaction()
+
   // TODO: Add moveCall to start a battle
   // Function: `${packageId}::battleplace::battle`
   // Arguments: heroId (object), battlePlaceId (object)
@@ -215,16 +246,21 @@ export const battle = (packageId: string, heroId: string, battlePlaceId: string)
   // - Use tx.object() for both hero and battle place objects
   // - The battle winner is determined by hero power comparison
   // - Winner takes both heroes
-  
-  return tx;
-};
+
+  return tx
+}
 ```
 
 #### 7. **Delist (Admin)** (`ui/src/utility/admin/delist.ts`)
+
 ```typescript
-export const delist = (packageId: string, listHeroId: string, adminCapId: string) => {
-  const tx = new Transaction();
-  
+export const delist = (
+  packageId: string,
+  listHeroId: string,
+  adminCapId: string
+) => {
+  const tx = new Transaction()
+
   // TODO: Add moveCall to delist a hero (Admin only)
   // Function: `${packageId}::battleplace::delist`
   // Arguments: listHeroId (object), adminCapId (object)
@@ -232,19 +268,25 @@ export const delist = (packageId: string, listHeroId: string, adminCapId: string
   // - Use tx.object() for both objects
   // - This requires admin capability verification
   // - Returns the hero to the original seller
-  
-  return tx;
-};
+
+  return tx
+}
 ```
 
 #### 8. **Change Price (Admin)** (`ui/src/utility/admin/change_price.ts`)
+
 ```typescript
-export const changePrice = (packageId: string, listHeroId: string, newPriceInSui: string, adminCapId: string) => {
-  const tx = new Transaction();
-  
+export const changePrice = (
+  packageId: string,
+  listHeroId: string,
+  newPriceInSui: string,
+  adminCapId: string
+) => {
+  const tx = new Transaction()
+
   // TODO: Convert SUI to MIST (1 SUI = 1,000,000,000 MIST)
   // const newPriceInMist = ?
-  
+
   // TODO: Add moveCall to change hero price (Admin only)
   // Function: `${packageId}::battleplace::change_the_price`
   // Arguments: listHeroId (object), newPriceInMist (u64), adminCapId (object)
@@ -252,16 +294,17 @@ export const changePrice = (packageId: string, listHeroId: string, newPriceInSui
   // - Use tx.object() for objects
   // - Use tx.pure.u64() for the new price
   // - Convert price from SUI to MIST before sending
-  
-  return tx;
-};
+
+  return tx
+}
 ```
 
 #### 9. **Transfer Admin Cap** (`ui/src/utility/helpers/transfer_admin_cap.ts`)
+
 ```typescript
 export const transferAdminCap = (adminCapId: string, to: string) => {
-  const tx = new Transaction();
-  
+  const tx = new Transaction()
+
   // TODO: Transfer admin capability to another address
   // Use tx.transferObjects() method
   // Arguments: [objects array], recipient address
@@ -269,32 +312,35 @@ export const transferAdminCap = (adminCapId: string, to: string) => {
   // - Use tx.object() to reference the admin cap
   // - This is a simple object transfer, not a moveCall
   // - The recipient becomes the new admin
-  
-  return tx;
-};
+
+  return tx
+}
 ```
 
 ## 🚀 Development Environment
 
 1. **Installation**
+
    ```bash
    cd ui
    npm install
    ```
 
 2. **Development Server**
+
    ```bash
    npm run dev
    ```
 
 3. **Building the Move Contract**
+
    ```bash
    cd move
    sui move build
    ```
 
 4. **Deploying the Contract**
+
    ```bash
    sui client publish --gas-budget 100000000
    ```
-
