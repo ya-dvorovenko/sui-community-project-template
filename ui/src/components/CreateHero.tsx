@@ -2,8 +2,8 @@ import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from "@
 import { Flex, Heading, Text, Card, Button, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNetworkVariable } from "../networkConfig";
-import { createHero } from "../utility/helpers/create_hero";
 import { RefreshProps } from "../types/props";
+import { createHero } from "../utility/heroes/create_hero";
 
 export function CreateHero({ refreshKey, setRefreshKey }: RefreshProps) {
   const account = useCurrentAccount();

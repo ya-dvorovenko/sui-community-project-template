@@ -11,7 +11,7 @@ export const buyHero = (packageId: string, listHeroId: string, priceInSui: strin
   // const [paymentCoin] = ?
   
   // TODO: Add moveCall to buy a hero
-  // Function: `${packageId}::battleplace::buy_hero`
+  // Function: `${packageId}::marketplace::buy_hero`
   // Arguments: listHeroId (object), paymentCoin (coin)
   // Hints:
   // - Use tx.object() for the ListHero object

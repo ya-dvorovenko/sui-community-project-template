@@ -7,8 +7,8 @@ export const changePrice = (packageId: string, listHeroId: string, newPriceInSui
   // const newPriceInMist = ?
   
   // TODO: Add moveCall to change hero price (Admin only)
-  // Function: `${packageId}::battleplace::change_the_price`
-  // Arguments: listHeroId (object), newPriceInMist (u64), adminCapId (object)
+  // Function: `${packageId}::marketplace::change_the_price`
+  // Arguments: adminCapId (object), listHeroId (object), newPriceInMist (u64)
   // Hints:
   // - Use tx.object() for objects
   // - Use tx.pure.u64() for the new price

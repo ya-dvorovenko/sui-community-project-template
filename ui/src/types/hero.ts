@@ -33,13 +33,9 @@ export interface HeroBoughtEvent {
   timestamp: string;
 }
 
-export interface BattlePlace {
-  uid: {
-    id: string;
-  };
-  warrior: {
-    fields: Hero;
-  };
+export interface Arena {
+  uid: { id: string };
+  warrior: { fields: Hero };
   owner: string;
 }
 
@@ -49,12 +45,12 @@ export interface AdminCap {
   };
 }
 
-export interface BattlePlaceCreatedEvent {
+export interface ArenaCreatedEvent {
   id: string;
   timestamp: string;
 }
 
-export interface BattlePlaceCompletedEvent {
+export interface ArenaCompletedEvent {
   winner: string;
   loser: string;
   timestamp: string;

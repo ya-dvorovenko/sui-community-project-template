@@ -1,10 +1,10 @@
 import { Transaction } from "@mysten/sui/transactions";
 
-export const createBattlePlace = (packageId: string, heroId: string) => {
+export const createArena = (packageId: string, heroId: string) => {
   const tx = new Transaction();
   
   // TODO: Add moveCall to create a battle place
-  // Function: `${packageId}::battleplace::create_battle_place`
+  // Function: `${packageId}::arena::create_arena`
   // Arguments: heroId (object)
   // Hints:
   // - Use tx.object() for the hero object

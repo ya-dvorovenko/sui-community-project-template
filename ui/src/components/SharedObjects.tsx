@@ -23,7 +23,7 @@ export default function SharedObjects({ refreshKey, setRefreshKey }: RefreshProp
     {
       owner: account?.address as string,
       filter: {
-        StructType: `${packageId}::battleplace::AdminCap`
+        StructType: `${packageId}::marketplace::AdminCap`
       },
       options: {
         showContent: true,
@@ -43,7 +43,7 @@ export default function SharedObjects({ refreshKey, setRefreshKey }: RefreshProp
     "queryEvents",
     {
       query: {
-        MoveEventType: `${packageId}::battleplace::HeroListed`
+        MoveEventType: `${packageId}::marketplace::HeroListed`
       },
       limit: 50,
       order: "descending"
