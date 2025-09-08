@@ -44,18 +44,53 @@ public struct HeroBought has copy, drop {
 
 // ========= FUNCTIONS =========
 
-fun init(ctx: &mut TxContext) {}
+fun init(ctx: &mut TxContext) {
+    // TODO: Initialize the module by creating AdminCap
+    // Hints:
+    // - Create AdminCap id with object::new(ctx)
+    // - Transfer it to the module publisher (ctx.sender())
+    // - This runs once when the module is published
+}
 
-public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {}
+public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
+    // TODO: Create a ListHero struct for marketplace
+    // Hints:
+    // - Use object::new(ctx) for unique ID
+    // - Set nft, price, and seller (ctx.sender()) fields
+    // - Emit HeroListed event with listing details
+    // - Use transfer::share_object() to make it publicly tradeable
+}
 
 #[allow(lint(self_transfer))]
-public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {}
+public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
+    // TODO: Implement hero purchase logic
+    // Hints:
+    // - Destructure list_hero to get id, nft, price, and seller
+    // - Use assert! to verify coin value equals listing price
+    // - Transfer coin to seller
+    // - Transfer hero NFT to buyer (ctx.sender())
+    // - Emit HeroBought event with transaction details
+    // - Delete the listing ID
+}
 
 // ========= ADMIN FUNCTIONS =========
 
-public fun delist(_: &AdminCap, list_hero: ListHero) {}
+public fun delist(_: &AdminCap, list_hero: ListHero) {
+    // TODO: Implement admin delist functionality
+    // Hints:
+    // - Destructure list_hero (ignore price with _)
+    // - Transfer NFT back to original seller
+    // - Delete the listing ID
+    // - The AdminCap parameter ensures only admin can call this
+}
 
-public fun change_the_price(_: &AdminCap, list_hero: &mut ListHero, new_price: u64) {}
+public fun change_the_price(_: &AdminCap, list_hero: &mut ListHero, new_price: u64) {
+    // TODO: Update the listing price
+    // Hints:
+    // - Access the price field of list_hero and update it
+    // - Use mutable reference (&mut) to modify the object
+    // - The AdminCap parameter ensures only admin can call this
+}
 
 // ========= GETTER FUNCTIONS =========
 
