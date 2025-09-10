@@ -4,7 +4,7 @@ export const buyHero = (packageId: string, listHeroId: string, priceInSui: strin
   const tx = new Transaction();
   
   // TODO: Convert SUI to MIST (1 SUI = 1,000,000,000 MIST)
-    //Hints:
+    // Hints:
     // const priceInMist = ?
   // TODO: Split coin for exact payment
     //Hints  
