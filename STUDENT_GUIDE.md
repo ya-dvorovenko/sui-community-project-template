@@ -31,7 +31,7 @@ public fun create_arena(hero: Hero, ctx: &mut TxContext) {
     // - Use object::new(ctx) for unique ID
     // - Set warrior field to the hero parameter
     // - Set owner to ctx.sender()
-    // - Emit ArenaCreated event with arena ID and timestamp
+    // - Emit ArenaCreated event with arena ID and timestamp (Don't forget to use ctx.epoch_timestamp_ms())
     // - Use transfer::share_object() to make it publicly accessible
 }
 ```
@@ -43,10 +43,10 @@ public fun battle(hero: Hero, arena: Arena, ctx: &mut TxContext) {
     // TODO: Implement battle logic
     // Hints:
     // - Destructure arena to get id, warrior, and owner
-    // - Compare hero.power with warrior.power
+    // - Compare hero.hero_power() with warrior.hero_power()
     // - If hero wins: both heroes go to ctx.sender()
     // - If warrior wins: both heroes go to battle place owner
-    // - Emit ArenaCompleted event with winner/loser IDs
+    // - Emit BattlePlaceCompleted event with winner/loser IDs (Don't forget to use object::to_inner(winner.id) or object::to_inner(loser.id) )
     // - Don't forget to delete the battle place ID at the end
 }
 ```
@@ -57,9 +57,9 @@ public fun battle(hero: Hero, arena: Arena, ctx: &mut TxContext) {
 fun init(ctx: &mut TxContext) {
     // TODO: Initialize the module by creating AdminCap
     // Hints:
-    // - Create AdminCap struct with object::new(ctx)
-    // - Transfer it to the package publisher (ctx.sender())
-    // - This runs once when the package is published
+    // - Create AdminCap id with object::new(ctx)
+    // - Transfer it to the module publisher (ctx.sender()) using transfer::public_transfer() function
+    // - This runs once when the module is published
 }
 ```
 
@@ -71,7 +71,7 @@ public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
     // Hints:
     // - Use object::new(ctx) for unique ID
     // - Set nft, price, and seller (ctx.sender()) fields
-    // - Emit HeroListed event with listing details
+    // - Emit HeroListed event with listing details (Don't forget to use object::id(&list_hero) )
     // - Use transfer::share_object() to make it publicly tradeable
 }
 ```
@@ -82,12 +82,16 @@ public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
 public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
     // TODO: Implement hero purchase logic
     // Hints:
+    //
+    // Example:
+    // let ListHero { id, nft, price, seller } = list_hero;
+    //
     // - Destructure list_hero to get id, nft, price, and seller
-    // - Use assert! to verify coin value equals listing price, on failiure abort with `EInvalidPayment`
-    // - Transfer coin to seller
+    // - Use assert! to verify coin value equals listing price (coin::value(&coin) == price) else abort with `EInvalidPayment`
+    // - Transfer coin to seller (use transfer::public_transfer() function)
     // - Transfer hero NFT to buyer (ctx.sender())
-    // - Emit HeroBought event with transaction details
-    // - Delete the listing ID
+    // - Emit HeroBought event with transaction details (Don't forget to use object::to_inner(id) )
+    // - Delete the listing ID (object::delete(id))
 }
 ```
 
@@ -97,7 +101,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
 public fun delist(_: &AdminCap, list_hero: ListHero) {
     // TODO: Implement admin delist functionality
     // Hints:
-    // - Destructure list_hero (ignore price with _)
+    // - Destructure list_hero (ignore price with "_price")
     // - Transfer NFT back to original seller
     // - Delete the listing ID
     // - The AdminCap parameter ensures only admin can call this
