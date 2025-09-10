@@ -7,7 +7,7 @@ export const buyHero = (packageId: string, listHeroId: string, priceInSui: strin
     // Hints:
     // const priceInMist = ?
   // TODO: Split coin for exact payment
-    //Hints  
+    // Hints  
     // Use tx.splitCoins(tx.gas, [priceInMist]) to create a payment coin
     // const [paymentCoin] = ?
   // TODO: Add moveCall to buy a hero
