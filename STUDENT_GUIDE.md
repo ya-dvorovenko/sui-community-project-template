@@ -31,7 +31,7 @@ public fun create_arena(hero: Hero, ctx: &mut TxContext) {
     // - Use object::new(ctx) for unique ID
     // - Set warrior field to the hero parameter
     // - Set owner to ctx.sender()
-    // - Emit ArenaCreated event with arena ID and timestamp (Don't forget to use ctx.epoch_timestamp_ms())
+    // - Emit ArenaCreated event with arena ID and timestamp (Don't forget to use ctx.epoch_timestamp_ms(), object::id(&arena))
     // - Use transfer::share_object() to make it publicly accessible
 }
 ```
@@ -46,7 +46,8 @@ public fun battle(hero: Hero, arena: Arena, ctx: &mut TxContext) {
     // - Compare hero.hero_power() with warrior.hero_power()
     // - If hero wins: both heroes go to ctx.sender()
     // - If warrior wins: both heroes go to battle place owner
-    // - Emit BattlePlaceCompleted event with winner/loser IDs (Don't forget to use object::to_inner(winner.id) or object::to_inner(loser.id) )
+    // - Emit BattlePlaceCompleted event with winner/loser IDs (Don't forget to use object::id(&warrior) or object::id(&hero)). 
+    //    - Note:  You have to emit this inside of the if else statements
     // - Don't forget to delete the battle place ID at the end
 }
 ```
@@ -90,7 +91,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
     // - Use assert! to verify coin value equals listing price (coin::value(&coin) == price) else abort with `EInvalidPayment`
     // - Transfer coin to seller (use transfer::public_transfer() function)
     // - Transfer hero NFT to buyer (ctx.sender())
-    // - Emit HeroBought event with transaction details (Don't forget to use object::to_inner(id) )
+    // - Emit HeroBought event with transaction details (Don't forget to use object::uid_to_inner(&id) )
     // - Delete the listing ID (object::delete(id))
 }
 ```
@@ -101,7 +102,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
 public fun delist(_: &AdminCap, list_hero: ListHero) {
     // TODO: Implement admin delist functionality
     // Hints:
-    // - Destructure list_hero (ignore price with "_price")
+    // - Destructure list_hero (ignore price with "price: _")
     // - Transfer NFT back to original seller
     // - Delete the listing ID
     // - The AdminCap parameter ensures only admin can call this
