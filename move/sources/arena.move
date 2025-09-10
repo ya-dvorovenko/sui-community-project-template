@@ -32,7 +32,7 @@ public fun create_arena(hero: Hero, ctx: &mut TxContext) {
     // - Use object::new(ctx) for unique ID
     // - Set warrior field to the hero parameter
     // - Set owner to ctx.sender()
-    // - Emit ArenaCreated event with arena ID and timestamp (Don't forget to use ctx.epoch_timestamp_ms())
+    // - Emit ArenaCreated event with arena ID and timestamp (Don't forget to use ctx.epoch_timestamp_ms(), object::id(&arena))
     // - Use transfer::share_object() to make it publicly accessible
 }
 
@@ -44,7 +44,8 @@ public fun battle(hero: Hero, arena: Arena, ctx: &mut TxContext) {
     // - Compare hero.hero_power() with warrior.hero_power()
     // - If hero wins: both heroes go to ctx.sender()
     // - If warrior wins: both heroes go to battle place owner
-    // - Emit BattlePlaceCompleted event with winner/loser IDs (Don't forget to use object::to_inner(winner.id) or object::to_inner(loser.id) )
+    // - Emit BattlePlaceCompleted event with winner/loser IDs (Don't forget to use object::id(&warrior) or object::id(&hero) ). 
+    //    - Note:  You have to emit this inside of the if else statements
     // - Don't forget to delete the battle place ID at the end
 }
 

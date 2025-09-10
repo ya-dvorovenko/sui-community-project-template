@@ -1,7 +1,6 @@
 module challenge::marketplace;
 
 use challenge::hero::Hero;
-use std::string::String;
 use sui::coin::{Self, Coin};
 use sui::event;
 use sui::sui::SUI;
@@ -73,7 +72,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
     // - Use assert! to verify coin value equals listing price (coin::value(&coin) == price) else abort with `EInvalidPayment`
     // - Transfer coin to seller (use transfer::public_transfer() function)
     // - Transfer hero NFT to buyer (ctx.sender())
-    // - Emit HeroBought event with transaction details (Don't forget to use object::to_inner(id) )
+    // - Emit HeroBought event with transaction details (Don't forget to use object::uid_to_inner(&id) )
     // - Delete the listing ID (object::delete(id))
 }
 
@@ -82,7 +81,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
 public fun delist(_: &AdminCap, list_hero: ListHero) {
     // TODO: Implement admin delist functionality
     // Hints:
-    // - Destructure list_hero (ignore price with "_price")
+    // - Destructure list_hero (ignore price with "price: _")
     // - Transfer NFT back to original seller
     // - Delete the listing ID (object::delete(id))
     // - The AdminCap parameter ensures only admin can call this
