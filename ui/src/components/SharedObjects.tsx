@@ -162,7 +162,7 @@ export default function SharedObjects({ refreshKey, setRefreshKey }: RefreshProp
     );
   }
 
-  if (eventsLoading) {
+  if (eventsLoading || isPending || !data) {
     return (
       <Card>
         <Text>Loading marketplace...</Text>
@@ -181,13 +181,6 @@ export default function SharedObjects({ refreshKey, setRefreshKey }: RefreshProp
     );
   }
 
-  if (isPending || !data) {
-    return (
-      <Card>
-        <Text>Loading marketplace...</Text>
-      </Card>
-    );
-  }
 
   const listedHeroes = data.filter(obj => obj.data?.content && 'fields' in obj.data.content);
 

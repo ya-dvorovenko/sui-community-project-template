@@ -37,7 +37,10 @@ npm install
 npm run build
 ```
 
-### 4. Deploy and Commit
+### 4. Configure Your Github Pages Settings ⚠️
+In your repository, go to Settings → Pages → Source, and change it from "Deploy from a branch" to "GitHub Actions"
+
+### 5. Deploy and Commit
 ```bash
 git add .
 git commit -m "Complete all the TODOs"
@@ -45,6 +48,8 @@ git push origin main
 ```
 
 ## Live Deployment
+
+⚠️ **IMPORTANT:** You need to configure your GitHub Pages settings (step 4 above) in order to see your deployed app!
 
 Once you push your changes to the `main` branch:
 

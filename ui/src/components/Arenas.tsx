@@ -78,7 +78,7 @@ export default function Arenas({ refreshKey, setRefreshKey }: RefreshProps) {
       },
     },
     {
-      enabled: !!packageId && !!battleEvents?.data?.length,
+      enabled: !!packageId && battleEvents?.data !== undefined,
       queryKey: [
         "multiGetObjects",
         "Arenas",
@@ -130,7 +130,7 @@ export default function Arenas({ refreshKey, setRefreshKey }: RefreshProps) {
     );
   }
 
-  if (eventsLoading || isPending) {
+  if (eventsLoading || isPending || !data) {
     return (
       <Card>
         <Text>Loading arenas...</Text>
