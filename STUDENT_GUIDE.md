@@ -116,6 +116,18 @@ public fun change_the_price(_: &AdminCap, list_hero: &mut ListHero, new_price: u
 }
 ```
 
+# ⚠️ Warning! All tests needs to pass!
+
+### After completing build and test your files. 
+
+**Building & Testing the Move Contracts**
+
+   ```bash
+   cd move
+   sui move build
+   sui move test
+   ```
+
 ### Frontend Utility Scripts
 
 #### 1. **Create Hero** (`ui/src/utility/heroes/create_hero.ts`)
