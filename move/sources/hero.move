@@ -30,7 +30,11 @@ public fun create_hero(name: String, image_url: String, power: u64, ctx: &mut Tx
     // - Use transfer::freeze_object() to make metadata immutable
 }
 
-// ========= TEST ONLY FUNCTIONS =========
+// ========= GETTER FUNCTIONS =========
+
+public fun hero_power(hero: &Hero): u64 {
+    hero.power
+}
 
 #[test_only]
 public fun hero_name(hero: &Hero): String {
@@ -40,11 +44,6 @@ public fun hero_name(hero: &Hero): String {
 #[test_only]
 public fun hero_image_url(hero: &Hero): String {
     hero.image_url
-}
-
-#[test_only]
-public fun hero_power(hero: &Hero): u64 {
-    hero.power
 }
 
 #[test_only]
