@@ -28,14 +28,14 @@ public struct AdminCap has key, store {
 // ========= EVENTS =========
 
 public struct HeroListed has copy, drop {
-    id: ID,
+    list_hero_id: ID,
     price: u64,
     seller: address,
     timestamp: u64,
 }
 
 public struct HeroBought has copy, drop {
-    id: ID,
+    list_hero_id: ID,
     price: u64,
     buyer: address,
     seller: address,
@@ -57,7 +57,7 @@ public fun list_hero(nft: Hero, price: u64, ctx: &mut TxContext) {
     // Hints:
     // - Use object::new(ctx) for unique ID
     // - Set nft, price, and seller (ctx.sender()) fields
-    // - Emit HeroListed event with listing details
+    // - Emit HeroListed event with listing details (Don't forget to use object::to_inner(list_hero.id) )
     // - Use transfer::share_object() to make it publicly tradeable
 }
 
@@ -69,7 +69,7 @@ public fun buy_hero(list_hero: ListHero, coin: Coin<SUI>, ctx: &mut TxContext) {
     // - Use assert! to verify coin value equals listing price
     // - Transfer coin to seller
     // - Transfer hero NFT to buyer (ctx.sender())
-    // - Emit HeroBought event with transaction details
+    // - Emit HeroBought event with transaction details (Don't forget to use object::to_inner(list_hero.id) )
     // - Delete the listing ID
 }
 

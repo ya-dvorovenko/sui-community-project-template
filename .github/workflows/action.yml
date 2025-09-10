@@ -30,17 +30,6 @@ jobs:
         working-directory: move
         run: sui move build && sui move test --verbose
 
-      # Install node.js
-      - name: NPM BUILD TX Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      # Build the User Interface app
-      - name: Set up working directory
-        run: |
-          cd ui && npm install
-
   deploy:
     needs: test
     runs-on: ubuntu-22.04
@@ -50,6 +39,7 @@ jobs:
       contents: read
       pages: write
       id-token: write
+      actions: read
 
     environment:
       name: github-pages
@@ -73,6 +63,8 @@ jobs:
       - name: Build UI
         working-directory: ui
         run: npm run build
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

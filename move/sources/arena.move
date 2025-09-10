@@ -14,13 +14,13 @@ public struct Arena has key, store {
 // ========= EVENTS =========
 
 public struct ArenaCreated has copy, drop {
-    id: ID,
+    arena_id: ID,
     timestamp: u64,
 }
 
 public struct ArenaCompleted has copy, drop {
-    winner: ID,
-    loser: ID,
+    winner_hero_id: ID,
+    loser_hero_id: ID,
     timestamp: u64,
 }
 
