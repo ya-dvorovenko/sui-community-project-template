@@ -71,7 +71,7 @@ export default function Arenas({ refreshKey, setRefreshKey }: RefreshProps) {
     "multiGetObjects",
     {
       ids:
-        battleEvents?.data?.map((event) => (event.parsedJson as any).id) || [],
+        battleEvents?.data?.map((event) => (event.parsedJson as any).arena_id) || [],
       options: {
         showContent: true,
         showType: true,
@@ -82,7 +82,7 @@ export default function Arenas({ refreshKey, setRefreshKey }: RefreshProps) {
       queryKey: [
         "multiGetObjects",
         "Arenas",
-        battleEvents?.data?.map((event) => (event.parsedJson as any).id),
+        battleEvents?.data?.map((event) => (event.parsedJson as any).arena_id),
         refreshKey,
       ],
     },
