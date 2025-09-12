@@ -64,7 +64,7 @@ export default function SharedObjects({ refreshKey, setRefreshKey }: RefreshProp
       }
     },
     {
-      enabled: !!packageId && !!listedEvents?.data?.length,
+      enabled: !!packageId && listedEvents?.data !== undefined,
       queryKey: ["multiGetObjects", listedEvents?.data?.map(event => (event.parsedJson as any).list_hero_id), refreshKey],
     }
   );
